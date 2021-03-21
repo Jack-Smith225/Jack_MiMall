@@ -7,7 +7,8 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-
+//import axios from 'axios'
+import jsonp from 'jsonp'
 export default {
   name: 'App',
   components: {
@@ -15,8 +16,16 @@ export default {
   },
   data(){
     return {
-      age: 30
+      age: 30,
+      data: ''
     }
+  },
+  mounted(){
+    let url = "https://coding.imooc.com/index/getadverhttps://www.imooc.com/search/hotwords";
+    jsonp(url, (err,res)=>{
+      let result = res;
+      this.data = result;
+    })
   }
 }
 </script>
