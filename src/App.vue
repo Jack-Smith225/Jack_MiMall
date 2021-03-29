@@ -5,19 +5,21 @@
 </template>
 
 <script>
-
+import storage from './storage/index'
 //import axios from 'axios'
 export default {
   name: 'App',
-  components: {
-
+  components: {},
+  data() {
+    return {}
   },
-  data(){
-    return {
-
-    }
-  },
-  mounted(){
+  mounted() {
+    //storage.setItem('a', 1)
+    //storage.setItem('abc', {a:1}, 'user');
+    //alert(JSON.stringify(storage.getStorage()))
+    //alert(storage.getItem("a"))
+    //alert(storage.getItem("a", "user"))
+    storage.clear("abc", "user")
 
   }
 }
