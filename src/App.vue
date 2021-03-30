@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import storage from './storage/index'
+//import storage from './storage/index'
 //import axios from 'axios'
 export default {
   name: 'App',
@@ -19,7 +19,7 @@ export default {
     //alert(JSON.stringify(storage.getStorage()))
     //alert(storage.getItem("a"))
     //alert(storage.getItem("a", "user"))
-    storage.clear("abc", "user")
+    //storage.clear("abc", "user")
 
   }
 }
