@@ -24,7 +24,17 @@ export default {
     //storage.clear("abc", "user")
 
     //静态文件mock
-    this.axios.get('/mock/user/login.json').then((res)=>{
+    // this.axios.get('/mock/user/login.json').then((res)=>{
+    //   this.res = res;
+    // })
+
+    // 通过easy-mock平台来mock
+    // this.axios.get('/user/login').then((res)=>{
+    //   this.res = res;
+    // })
+
+    // 本地集成mockjs来mock
+    this.axios.get('/user/login').then((res)=>{
       this.res = res;
     })
 
