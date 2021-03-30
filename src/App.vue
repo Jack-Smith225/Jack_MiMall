@@ -11,7 +11,9 @@ export default {
   name: 'App',
   components: {},
   data() {
-    return {}
+    return {
+      res: {}
+    }
   },
   mounted() {
     //storage.setItem('a', 1)
@@ -20,6 +22,11 @@ export default {
     //alert(storage.getItem("a"))
     //alert(storage.getItem("a", "user"))
     //storage.clear("abc", "user")
+
+    //静态文件mock
+    this.axios.get('/mock/user/login.json').then((res)=>{
+      this.res = res;
+    })
 
   }
 }
