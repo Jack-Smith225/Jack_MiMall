@@ -29,14 +29,14 @@ export default {
     // })
 
     // 通过easy-mock平台来mock
-    // this.axios.get('/user/login').then((res)=>{
-    //   this.res = res;
-    // })
-
-    // 本地集成mockjs来mock
     this.axios.get('/user/login').then((res)=>{
       this.res = res;
     })
+
+    // 本地集成mockjs来mock
+    // this.axios.get('/user/login').then((res)=>{
+    //   this.res = res;
+    // })
 
   }
 }
