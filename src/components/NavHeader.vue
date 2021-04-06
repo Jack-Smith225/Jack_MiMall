@@ -25,12 +25,12 @@
           <a href="/#/index"></a>
         </div>
         <div class="header-menu">
-           <div class="item-menu">
-             <span>小米手机</span>
-             <div class="children">
+          <div class="item-menu">
+            <span>小米手机</span>
+            <div class="children">
 
-             </div>
-           </div>
+            </div>
+          </div>
           <div class="item-menu">
             <span>RedMid红米</span>
             <div class="children">
@@ -44,7 +44,12 @@
             </div>
           </div>
         </div>
-        <div class="header-search"></div>
+        <div class="header-search">
+          <div class="wrapper">
+            <input type="text" name="keyword">
+            <a href="javascript:;"></a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -58,6 +63,8 @@ export default {
 
 <style lang="scss">
 @import "../assets/scss/base";
+@import "../assets/scss/mixin";
+
 .header {
   .nav-topbar {
     height: 39px;
@@ -68,37 +75,46 @@ export default {
 
     .container {
       /*base.scss -> container*/
-      display: flex;
-      justify-content: space-between; /*两边对齐*/
-      align-items: center; /*定义项目在交叉轴上如何对齐*/
+      @include flex();
+
+
       a {
         display: inline-block;
         color: #B0B0B0;
         margin-right: 17px;
       }
+
       .my-cart {
         width: 110px;
         background-color: #FF6600;
         text-align: center;
         color: #ffffff;
+
         .icon-cart {
-          display: inline-block;
+          @include bgImg(16px, 12px, '/imgs/icon-cart-checked.png');
+          //tag::由mixin函数替换
+          /*display: inline-block;
           width: 16px;
           height: 12px;
           background: url('/imgs/icon-cart-checked.png') no-repeat center;
-          background-size: contain; /*缩放背景图片以完全装入背景区，可能背景区部分空白*/
+          background-size: contain; !*缩放背景图片以完全装入背景区，可能背景区部分空白*!*/
+          //end::由mixin函数替换
           margin-right: 4px;
         }
       }
     }
   }
+
   .nav-header {
     .container {
       /*base.scss -> container*/
       height: 112px;
-      display: flex;
-      justify-content: space-between; /*两端对齐*/
-      align-items: center; /*在交叉轴的维度*/
+      @include flex();
+      //tag::由mixin函数替换
+      /*display: flex;
+      justify-content: $hov; !*两端对齐*!
+      align-items: $col; !*在交叉轴的维度*!*/
+      //end::由mixin函数替换
       .header-logo {
         display: inline-block;
         width: 55px;
@@ -112,21 +128,27 @@ export default {
 
           &:before { /*scss的伪类*/
             content: ' '; /*content是占位的, 如果不加, 伪类就无法正常显示*/
-            display: inline-block;
+            @include bgImg(55px, 55px, "/imgs/mi-logo.png", 55px);
+            //tag::由mixin函数替换
+            /*display: inline-block;
             width: 55px;
             height: 55px;
             background: url("/imgs/mi-logo.png") no-repeat center;
-            background-size: 55px;
+            background-size: 55px;*/
+            //end::由mixin函数替换
             transition: margin 0.2s;
           }
 
           &:after { /*scss的伪类*/
             content: ' ';
-            display: inline-block;
-            width: 55px;
-            height: 55px;
-            background: url("/imgs/mi-home.png") no-repeat center;
-            background-size: 55px;
+            @include bgImg(55px, 55px, "/imgs/mi-home.png", 55px)
+            //tag::由mixin函数替换
+            /* display: inline-block;
+             width: 55px;
+             height: 55px;
+             background: url("/imgs/mi-home.png") no-repeat center;
+             background-size: 55px;*/
+            //end::由mixin函数替换
           }
 
           &:hover:before {
@@ -135,22 +157,59 @@ export default {
           }
         }
       }
-      .header-menu{
+
+      .header-menu {
         display: inline-block;
-        width: 200px;
+        width: 643px;
         padding-left: 209px;
+
         .item-menu {
           display: inline-block;
           color: #333333;
           font-weight: bold;
           font-size: 16px;
           line-height: 112px;
+          margin-right: 20px;
+
           span {
             cursor: pointer;
           }
-          &:hover{ /*控制item-menu的hover*/
+
+          &:hover { /*控制item-menu的hover*/
 
           }
+        }
+      }
+
+      .header-search {
+        width: 319px;
+
+        .wrapper {
+          height: 50px;
+          border: 1px solid #E0E0E0;
+          display: flex;
+          align-items: center; /*设置交叉轴向的对齐方式*/
+          input {
+            border: none;
+            box-sizing: border-box; /*设置宽度包含padding值, 否则宽度会变成264 + 14*/
+            border-right: 1px solid #E0E0E0;
+            width: 264px;
+            height: 50px;
+            padding-left: 14px;
+          }
+
+          a {
+            @include bgImg(18px, 18px, "/imgs/icon-search.png");
+            //tag::由mixin函数替换
+            /*display: inline-block; !*一般背景图片都会控制为inline-block*!
+            width: 18px; !*注意是按钮的宽度*!
+            height: 18px; !*注意是按钮的高度*!
+            background: url("/imgs/icon-search.png") no-repeat center; !*背景图片基本上都是这样去写的*!
+            background-size: contain; !*contain是让背景图片充满这个元素*!*/
+            //end::由mixin函数替换
+            margin-left: 17px;
+          }
+
         }
       }
     }
