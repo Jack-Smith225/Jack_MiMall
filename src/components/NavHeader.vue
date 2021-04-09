@@ -12,9 +12,11 @@
                 </div>
                 <!--/*容器右边的菜单: '登录, 注册...'*/-->
                 <div class="topbar-user">
-                    <a href="javascript:;">登录</a>
-                    <a href="javascript:;">注册</a>
-                    <a href="javascript:;" class="my-cart"><span class="icon-cart"></span>购物车</a>
+                    <a href="javascript:;" v-if="username">{{ username }}</a>
+                    <a href="javascript:;" v-if="!username" v-on:click="login">登录</a>
+                    <a href="javascript:;" v-if="username">我的订单</a>
+                    <a href="javascript:;" class="my-cart" v-on:click="goToCart"><span class="icon-cart"></span>购物车
+                    </a>
                 </div>
             </div>
         </div>
@@ -30,64 +32,15 @@
                         <!--鼠标放上去之后, children才会展示出来, 所以默认需要把它隐藏掉 -->
                         <div class="children">
                             <ul>
-                                <li class="product">
-                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
+                                <li class="product" v-for="(item, index) in phoneList" :key="index"> <!--index是item
+                                的索引--><!--加:key渲染速度更高一些, 并且以后复用率更高一些-->
+                                    <a v-bind:href="'/#/product/'+item.id" target="_blank"><!--_blank打开一个新窗口-->
                                         <div class="pro-img">
                                             <img
-                                                src="https://cdn.cnbj0.fds.api.mi-img.com/b2c-mimall-media/f515ab05232ed14ccd78ec67e024495a.png"/>
+                                                v-bind:src="item.mainImage" v-bind:alt="item.subtitle"/>
                                         </div>
-                                        <div class="pro-name">小米CC9</div>
-                                        <div class="pro-price">1799元</div>
-                                    </a>
-                                </li>
-                                <li class="product">
-                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
-                                        <div class="pro-img">
-                                            <img
-                                                src="https://cdn.cnbj0.fds.api.mi-img.com/b2c-mimall-media/f515ab05232ed14ccd78ec67e024495a.png"/>
-                                        </div>
-                                        <div class="pro-name">小米CC9</div>
-                                        <div class="pro-price">1799元</div>
-                                    </a>
-                                </li>
-                                <li class="product">
-                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
-                                        <div class="pro-img">
-                                            <img
-                                                src="https://cdn.cnbj0.fds.api.mi-img.com/b2c-mimall-media/f515ab05232ed14ccd78ec67e024495a.png"/>
-                                        </div>
-                                        <div class="pro-name">小米CC9</div>
-                                        <div class="pro-price">1799元</div>
-                                    </a>
-                                </li>
-                                <li class="product">
-                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
-                                        <div class="pro-img">
-                                            <img
-                                                src="https://cdn.cnbj0.fds.api.mi-img.com/b2c-mimall-media/f515ab05232ed14ccd78ec67e024495a.png"/>
-                                        </div>
-                                        <div class="pro-name">小米CC9</div>
-                                        <div class="pro-price">1799元</div>
-                                    </a>
-                                </li>
-                                <li class="product">
-                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
-                                        <div class="pro-img">
-                                            <img
-                                                src="https://cdn.cnbj0.fds.api.mi-img.com/b2c-mimall-media/f515ab05232ed14ccd78ec67e024495a.png"/>
-                                        </div>
-                                        <div class="pro-name">小米CC9</div>
-                                        <div class="pro-price">1799元</div>
-                                    </a>
-                                </li>
-                                <li class="product">
-                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
-                                        <div class="pro-img">
-                                            <img
-                                                src="https://cdn.cnbj0.fds.api.mi-img.com/b2c-mimall-media/f515ab05232ed14ccd78ec67e024495a.png"/>
-                                        </div>
-                                        <div class="pro-name">小米CC9</div>
-                                        <div class="pro-price">1799元</div>
+                                        <div class="pro-name">{{item.name}}</div>
+                                        <div class="pro-price">{{item.price | currency}}</div>
                                     </a>
                                 </li>
                             </ul>
@@ -183,14 +136,31 @@ export default {
     name: 'nav-header',
     data(){
         return {
-            username: 'jack',
+            username: '',
             phoneList:[]
         }
     },
+    // tag::金额格式化过滤器, 类似的 日期也可会用到过滤器
+    filters:{
+        currency(val) {
+            if (!val) {
+                return '0.00';
+
+            }
+            return '¥' + val.toFixed(2) + '元';
+
+        }
+
+    },
+    // end::金额格式化过滤器, 类似的 日期也可会用到过滤器
+
     mounted() { // 相当于ready()
         this.getProductList()
     },
     methods: {
+        login() { //跳转到登录页面的方法
+            this.$router.push('/login')
+        },
         getProductList() {
             this.axios.get('/products', { // get和post的传参方式有区别
                 params:{
@@ -200,6 +170,9 @@ export default {
             }).then((res)=>{
                 this.phoneList = res.list
             })
+        },
+        goToCart() {
+            this.$router.push('/cart') /*跳转路由*/
         }
     }
 }
