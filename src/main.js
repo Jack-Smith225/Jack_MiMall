@@ -10,7 +10,8 @@ if (mock) {
   require('./mock/api')
 }
 //根据前端的跨域方式做调整 /a/b : /api/a/b => /a/b [使用接口代理跨域]
-axios.defaults.baseURL = ' http://localhost:7300/mock/6064012b9a6b18e0bb1af203/mimall';
+// axios.defaults.baseURL = ' http://localhost:7300/mock/6064012b9a6b18e0bb1af203/mimall';
+axios.defaults.baseURL = '/api';
 axios.defaults.timeout = 8000;
 //根据环境变量获取伙同的请求地址
 //axios.defaults.baseURL = env.baseURL;

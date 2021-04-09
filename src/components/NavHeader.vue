@@ -95,14 +95,75 @@
                     </div>
                     <div class="item-menu">
                         <span>RedMid红米</span>
-                        <div class="children">
+                        <!--<div class="children">
 
-                        </div>
+                        </div>-->
                     </div>
                     <div class="item-menu">
                         <span>电视</span>
                         <div class="children">
-
+                            <ul>
+                                <li class="product">
+                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
+                                        <div class="pro-img">
+                                            <img
+                                                src="/imgs/nav-img/nav-3-1.jpg"/>
+                                        </div>
+                                        <div class="pro-name">小米壁画电视 65英寸</div>
+                                        <div class="pro-price">6999元</div>
+                                    </a>
+                                </li>
+                                <li class="product">
+                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
+                                        <div class="pro-img">
+                                            <img
+                                                src="/imgs/nav-img/nav-3-2.jpg"/>
+                                        </div>
+                                        <div class="pro-name">小米全面屏电视E55A</div>
+                                        <div class="pro-price">1999元</div>
+                                    </a>
+                                </li>
+                                <li class="product">
+                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
+                                        <div class="pro-img">
+                                            <img
+                                                src="/imgs/nav-img/nav-3-3.png"/>
+                                        </div>
+                                        <div class="pro-name">小米电视4A 32英寸</div>
+                                        <div class="pro-price">699元</div>
+                                    </a>
+                                </li>
+                                <li class="product">
+                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
+                                        <div class="pro-img">
+                                            <img
+                                                src="/imgs/nav-img/nav-3-4.jpg"/>
+                                        </div>
+                                        <div class="pro-name">小米电视4A 55英寸</div>
+                                        <div class="pro-price">1799元</div>
+                                    </a>
+                                </li>
+                                <li class="product">
+                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
+                                        <div class="pro-img">
+                                            <img
+                                                src="/imgs/nav-img/nav-3-5.jpg"/>
+                                        </div>
+                                        <div class="pro-name">小米电视4A 65英寸</div>
+                                        <div class="pro-price">1799元</div>
+                                    </a>
+                                </li>
+                                <li class="product">
+                                    <a href="" target="_blank"><!--_blank打开一个新窗口-->
+                                        <div class="pro-img">
+                                            <img
+                                                src="/imgs/nav-img/nav-3-6.png"/>
+                                        </div>
+                                        <div class="pro-name">查看全部</div>
+                                        <div class="pro-price">查看全部</div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -119,7 +180,28 @@
 
 <script>
 export default {
-    name: 'nav-header'
+    name: 'nav-header',
+    data(){
+        return {
+            username: 'jack',
+            phoneList:[]
+        }
+    },
+    mounted() { // 相当于ready()
+        this.getProductList()
+    },
+    methods: {
+        getProductList() {
+            this.axios.get('/products', { // get和post的传参方式有区别
+                params:{
+                    categoryId:'100012',
+                    pageSize: 6
+                }
+            }).then((res)=>{
+                this.phoneList = res.list
+            })
+        }
+    }
 }
 </script>
 
@@ -190,7 +272,7 @@ export default {
                     width: 110px;
                     height: 55px;
 
-                    &:before { /*scss的伪类*/
+                    &:before { /*scss的伪类-logo标志*/
                         content: ' '; /*content是占位的, 如果不加, 伪类就无法正常显示*/
                         @include bgImg(55px, 55px, "/imgs/mi-logo.png", 55px);
                         //tag::由mixin函数替换
@@ -203,7 +285,7 @@ export default {
                         transition: margin 0.2s;
                     }
 
-                    &:after { /*scss的伪类*/
+                    &:after { /*scss的伪类-home标志*/
                         content: ' ';
                         @include bgImg(55px, 55px, "/imgs/mi-home.png", 55px)
                         //tag::由mixin函数替换
@@ -244,6 +326,7 @@ export default {
 
                         .children {
                             height: 220px; /*设计稿上应有的高度*/
+                            opacity: 1;
                         }
                     }
 
@@ -252,9 +335,14 @@ export default {
                         top: 112px;
                         left: 0;
                         width: 1226px;
-                        height: 220px;
+                        height: 0px; // 默认隐藏
+                        opacity: 0; // 不透明度
+                        overflow: hidden;
+                        //height: 220px;
                         border-top: 1px solid #e5e5e5;
                         box-shadow: 0px 7px 6px 0px rgba(0, 0, 0, 0.11); /*阴影*/
+                        z-index: 10;
+                        transition: all .5s;
 
                         .product {
                             position: relative;
