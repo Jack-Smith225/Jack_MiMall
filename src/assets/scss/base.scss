@@ -4,3 +4,9 @@
   margin-right: auto;
   margin-left: auto;
 }
+a{
+  img {
+    width: 100%; /*设置在水平方向填满*/
+    height: 100%; /*设置在垂直方向填满*/
+  }
+}

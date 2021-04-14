@@ -54,8 +54,17 @@
                 </swiper>
             </div>
             <!--广告位-->
-            <div class="ads-box"></div>
-            <div class="banner"></div>
+            <div class="ads-box">
+                <a v-bind:href="'/#/product/' + item.id" v-for="(item, index) in adsList" :key="index">
+                    <img v-bind:src="item.img" alt="">
+                </a>
+            </div>
+            <!--banner大图-->
+            <div class="banner">
+                <a href="/#/product/30">
+                    <img src="/imgs/banner-1.png" alt="">
+                </a>
+            </div>
             <!--商品列表-->
             <div class="product-box"></div>
         </div>
@@ -152,6 +161,25 @@ export default {
                 [0, 0, 0, 0],
                 [0, 0, 0, 0],
                 [0, 0, 0, 0]
+            ],
+            /*广告位*/
+            adsList:[
+                {
+                    id:'33',
+                    img:'/imgs/ads/ads-1.png'
+                },
+                {
+                    id:'48',
+                    img:'/imgs/ads/ads-2.jpg'
+                },
+                {
+                    id:'45',
+                    img:'/imgs/ads/ads-3.png'
+                },
+                {
+                    id:'47',
+                    img:'/imgs/ads/ads-4.jpg'
+                }
             ]
         }
     }
@@ -259,6 +287,27 @@ export default {
                 height: 100%;
             }
         }
+    }
+    .ads-box {
+        @include flex();
+
+
+        a {
+            width: 296px;
+            height: 167px;
+        }
+
+        margin-top: 14px;
+        margin-bottom: 31px;
+    }
+    .banner{
+        a{
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+        margin-bottom: 50px; /*距离上方元素的距离, 已经在ads里面定义过了*/
     }
 }
 
