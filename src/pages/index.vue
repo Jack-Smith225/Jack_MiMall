@@ -200,14 +200,14 @@ export default {
                         background-color: $colorA;
                         .children {
 
-                            opacity: 1;/*hover上去之后, 显示children*/
+                            display: block;
                         }
                     }
 
                     .children {
-                        //display: none; /*默认不显示*/
+                        display: none; /*默认不显示*/
                         width: 962px;
-                        opacity: 0;
+                        height: 451px;
                         transition: all .5s;
                         background-color: $colorG;
                         position: absolute;
