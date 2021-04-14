@@ -7,7 +7,16 @@
                     <ul class="menu-wrap">
                         <li class="menu-item">
                             <a href="javascript:;">手机 电话卡</a> <!--设置点击之后什么都不做-->
-                            <div class="children"></div>
+                            <div class="children">
+                                <ul v-for="(item,i) in menuList" :key="i">
+                                    <li v-for="(sub,j) in item" :key="j">
+                                        <a v-bind:href="sub?'/#/product/' +sub.id:'' ">
+                                            <img v-bind:src="sub ? sub.img: '/imgs/item-box-1.png'" alt="">
+                                            {{ sub ? sub.name : '小米9' }} <!--是true则渲染, 否则展示默认值-->
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         <li class="menu-item">
                             <a href="javascript:;">电视 盒子</a> <!--设置点击之后什么都不做-->
@@ -72,7 +81,7 @@ export default {
         return {
             /*滑动的整体配置*/
             swiperOption: {
-                autoplay: true, /*设置自动滑动*/
+                autoplay: false, /*设置自动滑动*/
                 loop: true, /*循环滑动*/
                 effect: "cube", /*滑动动画*/
                 cubeEffect: {
@@ -90,7 +99,7 @@ export default {
                     prevEl: '.swiper-button-prev',
                 },
             },
-            /*暂时写死循环的数据*/
+            /*轮播图片列表-暂时写死循环的数据*/
             slideList: [
                 {
                     id: '42',
@@ -113,6 +122,36 @@ export default {
                     img: '/imgs/slider/slide-5.jpg'
                 }
 
+            ],
+            /*轮播菜单的二级菜单-二维数组, 暂时写死*/
+            menuList: [
+                [
+                    {
+                        id: '30',
+                        img: '/imgs/item-box-1.png',
+                        name: '小米CC9',
+                    },
+                    {
+                        id: '31',
+                        img: '/imgs/item-box-2.png',
+                        name: '小米8青春版',
+                    },
+                    {
+                        id: '32',
+                        img: '/imgs/item-box-3.jpg',
+                        name: 'Redmi K20 Pro',
+                    },
+                    {
+                        id: '33',
+                        img: '/imgs/item-box-4.jpg',
+                        name: '移动4G专区',
+                    }
+                ],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0]
             ]
         }
     }
@@ -157,8 +196,49 @@ export default {
                         }
                     }
 
-                    &:hover{
+                    &:hover {
                         background-color: $colorA;
+                        .children {
+
+                            opacity: 1;/*hover上去之后, 显示children*/
+                        }
+                    }
+
+                    .children {
+                        //display: none; /*默认不显示*/
+                        width: 962px;
+                        opacity: 0;
+                        transition: all .5s;
+                        background-color: $colorG;
+                        position: absolute;
+                        top: -26px;
+                        left: 264px; /*left和right指定一个就可以*/
+                        border: 1px solid $colorH;
+
+                        ul {
+                            display: flex;
+                            justify-content: space-between;
+                            height: 75px; /*children的总高度是451px 451/6 = 75*/
+                            li {
+                                height: 75px;
+                                line-height: 75px; /*height和line-height设置相同, 可以让文字垂直方向居中*/
+                                flex: 1; /*这样每个li也能均分*/
+                                //width: 241px; /*children的总宽度是962px 总共4列, 所以 962/4 = 241*/
+                                padding-left: 23px;
+
+                                a {
+                                    color: #333333;
+                                    font-size: 14px;
+                                }
+                                img {
+                                    width: 42px;
+                                    height: 35px;
+                                    vertical-align: middle; /*设置图片垂直方向居中*/
+                                    margin-right: 15px;
+                                }
+
+                            }
+                        }
                     }
 
                 }
