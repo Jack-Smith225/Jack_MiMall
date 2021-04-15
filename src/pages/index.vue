@@ -65,8 +65,38 @@
                     <img src="/imgs/banner-1.png" alt="">
                 </a>
             </div>
-            <!--商品列表-->
-            <div class="product-box"></div>
+
+        </div>
+        <!--商品列表-->
+        <div class="product-box">
+            <div class="container">
+                <h2>手机</h2>
+                <!--内容区域是左右结构的, 先用大的包起来-->
+                <div class="wrapper">
+                    <div class="banner-left"><!--左边的banner大图-->
+                        <a href="/#/product/35">
+                            <img src="/imgs/mix-alpha.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="list-box"> <!--右边的手机列表-二维-->
+                        <div class="list" v-for="(arr, i) in phoneList" :key="i">
+                            <div class="item" v-for="(item, j) in arr" :key="j">
+                                <span>新品</span> <!--标签-新品或秒杀-->
+                                <div class="item-img">
+                                    <img
+                                        src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/6f2493e6c6fe8e2485c407e5d75e3651.jpg"
+                                        alt="">
+                                </div>
+                                <div class="item-info">
+                                    <h3>小米9</h3>
+                                    <p>骁龙855 Plus， 弹出全面屏</p> <!--描述信息, 一般用p标签-->
+                                    <p class="price">2999元</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <service-bar></service-bar> <!--紧贴底部的服务条-->
@@ -163,25 +193,30 @@ export default {
                 [0, 0, 0, 0]
             ],
             /*广告位*/
-            adsList:[
+            adsList: [
                 {
-                    id:'33',
-                    img:'/imgs/ads/ads-1.png'
+                    id: '33',
+                    img: '/imgs/ads/ads-1.png'
                 },
                 {
-                    id:'48',
-                    img:'/imgs/ads/ads-2.jpg'
+                    id: '48',
+                    img: '/imgs/ads/ads-2.jpg'
                 },
                 {
-                    id:'45',
-                    img:'/imgs/ads/ads-3.png'
+                    id: '45',
+                    img: '/imgs/ads/ads-3.png'
                 },
                 {
-                    id:'47',
-                    img:'/imgs/ads/ads-4.jpg'
+                    id: '47',
+                    img: '/imgs/ads/ads-4.jpg'
                 }
+            ],
+            /*手机商品列表*/
+            phoneList: [
+                [1, 1, 1, 1],
+                [1, 1, 1, 1]
             ]
-        }
+        };
     }
 }
 </script>
@@ -226,6 +261,7 @@ export default {
 
                     &:hover {
                         background-color: $colorA;
+
                         .children {
 
                             display: block;
@@ -258,6 +294,7 @@ export default {
                                     color: #333333;
                                     font-size: 14px;
                                 }
+
                                 img {
                                     width: 42px;
                                     height: 35px;
@@ -288,6 +325,7 @@ export default {
             }
         }
     }
+
     .ads-box {
         @include flex();
 
@@ -300,14 +338,108 @@ export default {
         margin-top: 14px;
         margin-bottom: 31px;
     }
-    .banner{
-        a{
+
+    .banner {
+        a {
             img {
                 width: 100%;
                 height: auto;
             }
         }
+
         margin-bottom: 50px; /*距离上方元素的距离, 已经在ads里面定义过了*/
+    }
+
+    .product-box {
+        background-color: $colorJ;
+        padding-top: 30px;
+        padding-bottom: 50px;
+        /*"手机"-标题的格式*/
+        h2 {
+            font-size: 22px;
+            height: 21px;
+            line-height: 21px;
+            color: $colorB;
+        }
+
+        /*wrapper的格式-他是左右结构*/
+        .wrapper {
+            display: flex;
+            margin-top: 20px;
+
+            .banner-left {
+                img {
+                    width: 224px;
+                    height: 619px;
+                }
+
+                margin-right: 16px;
+            }
+
+            /*多行list的一个wrapper*/
+            .list-box {
+                .list {
+                    /*每一个list行, 进行弹性布局*/
+                    @include flex();
+                    width: 986px;
+                    margin-bottom: 14px;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    .item {
+                        width: 236px;
+                        height: 302px;
+                        background-color: $colorG;
+                        text-align: center; /*设置文字居中*/
+                        /*"新品"标签*/
+                        span {
+
+                        }
+
+                        .item-img {
+                            img {
+                                height: 195px;
+
+                            }
+                        }
+
+                        .item-info {
+                            h3 {
+                                font-size: $fontJ;
+                                color: $colorB;
+                                line-height: $fontJ;
+                                font-weight: bold;
+
+                            }
+
+                            p {
+                                color: $colorD;
+                                font-size: $fontK;
+                                line-height: 13px;
+                                margin-top: 6px;
+                                margin-bottom: 13px;
+                            }
+
+                            .price {
+                                color: #F20A0A;
+                                font-size: $fontJ;
+                                font-weight: bold;
+                                cursor: pointer; /*设置指上去变成小手*/
+                                &:after {
+                                    content: ' ';
+                                    @include bgImg(22px, 22px, '/imgs/icon-cart-hover.png');
+                                    margin-left: 5px;
+                                    vertical-align: middle;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
 
