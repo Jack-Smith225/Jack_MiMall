@@ -12,3 +12,11 @@
   background: url($img) no-repeat center;
   background-size: $size; /*缩放背景图片以完全装入背景区，可能背景区部分空白*/
 }
+/**/
+@mixin position($pos:absolute,$top:0, $left:0, $w:100%, $h:100%){
+  position: $pos;
+  top: $top;
+  left:$left;
+  width:$w;
+  height: $h;
+}

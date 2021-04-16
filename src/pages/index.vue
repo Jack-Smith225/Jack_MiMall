@@ -100,11 +100,18 @@
         </div>
 
         <service-bar></service-bar> <!--紧贴底部的服务条-->
+        <modal title="提示" sure-text="查看购物车" btn-type="1" modal-type="middle" v-bind:show-modal="true">
+            <template v-slot:body>
+                <p>商品添加成功!</p>
+            </template>
+        </modal> <!--
+        父组件向子组件传递值-->
     </div>
 </template>
 
 <script>
 import ServiceBar from "./../components/ServiceBar";
+import Modal from "./../components/Modal";
 import {swiper, swiperSlide} from 'vue-awesome-swiper'
 // require styles
 import 'swiper/css/swiper.css'
@@ -114,7 +121,8 @@ export default {
     components: {
         swiper,
         swiperSlide,
-        ServiceBar
+        ServiceBar,
+        Modal
     },
     data() {
         return {
