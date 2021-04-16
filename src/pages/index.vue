@@ -81,16 +81,16 @@
                     <div class="list-box"> <!--右边的手机列表-二维-->
                         <div class="list" v-for="(arr, i) in phoneList" :key="i">
                             <div class="item" v-for="(item, j) in arr" :key="j">
-                                <span>新品</span> <!--标签-新品或秒杀-->
+                                <span v-bind:class="{'new-pro':j%2===0, 'kill-pro':!(j%2===0)}">新品</span> <!--标签-新品或秒杀-->
                                 <div class="item-img">
                                     <img
-                                        src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/6f2493e6c6fe8e2485c407e5d75e3651.jpg"
+                                        v-bind:src="item.mainImage"
                                         alt="">
                                 </div>
                                 <div class="item-info">
-                                    <h3>小米9</h3>
-                                    <p>骁龙855 Plus， 弹出全面屏</p> <!--描述信息, 一般用p标签-->
-                                    <p class="price">2999元</p>
+                                    <h3>{{item.name}}</h3>
+                                    <p>{{item.subtitle}}</p> <!--描述信息, 一般用p标签-->
+                                    <p class="price">{{ item.price }}元</p>
                                 </div>
                             </div>
                         </div>
@@ -212,11 +212,26 @@ export default {
                 }
             ],
             /*手机商品列表*/
-            phoneList: [
-                [1, 1, 1, 1],
-                [1, 1, 1, 1]
-            ]
+            phoneList: []
         };
+    },
+    mounted() {
+        this.init()
+    },
+    methods: {
+        init() {
+            this.axios.get('/products', {
+                params: {
+                    categoryId: 100012,
+                    pageSize: 8
+                }
+            }).then((res) => {
+                this.phoneList = [
+                    res.list.slice(0, 4),
+                    res.list.slice(4, 8)
+                ]
+            });
+        }
     }
 }
 </script>
@@ -393,15 +408,32 @@ export default {
                         height: 302px;
                         background-color: $colorG;
                         text-align: center; /*设置文字居中*/
+                        display: flex;
+                        flex-direction: column; /*弹性布局的主轴, 垂直 起点在上*/
+                        justify-content: center;
+                        align-items: center; /*沿着主轴的对齐方式*/
                         /*"新品"标签*/
                         span {
+                            display: inline-block; /*因为span本身是inline元素, 所以他的宽度高度设置不上去*/
+                            width: 67px;
+                            height: 24px;
+                            line-height: 24px; /*将line-height和height设置成相同, 可以设置文字垂直居中*/
+                            font-size: 14px;
+                            color: $colorG;
 
+                            /*为了动态的设置他的类*/
+                            &.new-pro {
+                                background-color: #7ecf68;
+                            }
+
+                            &.kill-pro {
+                                background-color: #e82626;
+                            }
                         }
 
                         .item-img {
                             img {
                                 height: 195px;
-
                             }
                         }
 
