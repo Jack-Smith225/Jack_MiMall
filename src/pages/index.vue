@@ -11,7 +11,7 @@
                                 <ul v-for="(item,i) in menuList" :key="i">
                                     <li v-for="(sub,j) in item" :key="j">
                                         <a v-bind:href="sub?'/#/product/' +sub.id:'' ">
-                                            <img v-bind:src="sub ? sub.img: '/imgs/item-box-1.png'" alt="">
+                                            <img v-lazy="sub ? sub.img: '/imgs/item-box-1.png'" alt="">
                                             {{ sub ? sub.name : '小米9' }} <!--是true则渲染, 否则展示默认值-->
                                         </a>
                                     </li>
@@ -44,7 +44,7 @@
                 </div>
                 <swiper v-bind:options="swiperOption">
                     <swiper-slide v-for="(item,index) in slideList" v-bind:key="index">
-                        <a v-bind:href="'/#/product/'+item.id"><img v-bind:src="item.img" alt=""></a>
+                        <a v-bind:href="'/#/product/'+item.id"><img v-lazy="item.img" alt=""></a>
                     </swiper-slide>
                     <!-- Optional controls -->
                     <div class="swiper-pagination" slot="pagination"></div> <!--分页器, 下面的小圆点-->
@@ -56,13 +56,13 @@
             <!--广告位-->
             <div class="ads-box">
                 <a v-bind:href="'/#/product/' + item.id" v-for="(item, index) in adsList" :key="index">
-                    <img v-bind:src="item.img" alt="">
+                    <img v-lazy="item.img" alt="">
                 </a>
             </div>
             <!--banner大图-->
             <div class="banner">
                 <a href="/#/product/30">
-                    <img src="/imgs/banner-1.png" alt="">
+                    <img v-lazy="'/imgs/banner-1.png'" alt="">
                 </a>
             </div>
 
@@ -75,7 +75,7 @@
                 <div class="wrapper">
                     <div class="banner-left"><!--左边的banner大图-->
                         <a href="/#/product/35">
-                            <img src="/imgs/mix-alpha.jpg" alt="">
+                            <img v-lazy="'/imgs/mix-alpha.jpg'" alt="">
                         </a>
                     </div>
                     <div class="list-box"> <!--右边的手机列表-二维-->
@@ -85,7 +85,7 @@
                                 <!--标签-新品或秒杀-->
                                 <div class="item-img">
                                     <img
-                                        v-bind:src="item.mainImage"
+                                        v-lazy="item.mainImage"
                                         alt="">
                                 </div>
                                 <div class="item-info">

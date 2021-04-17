@@ -37,7 +37,7 @@
                                     <a v-bind:href="'/#/product/'+item.id" target="_blank"><!--_blank打开一个新窗口-->
                                         <div class="pro-img">
                                             <img
-                                                v-bind:src="item.mainImage" v-bind:alt="item.subtitle"/>
+                                                v-lazy="item.mainImage" v-bind:alt="item.subtitle"/>
                                         </div>
                                         <div class="pro-name">{{item.name}}</div>
                                         <div class="pro-price">{{item.price | currency}}</div>
@@ -60,7 +60,7 @@
                                     <a href="" target="_blank"><!--_blank打开一个新窗口-->
                                         <div class="pro-img">
                                             <img
-                                                src="/imgs/nav-img/nav-3-1.jpg"/>
+                                                v-lazy="'/imgs/nav-img/nav-3-1.jpg'"/>
                                         </div>
                                         <div class="pro-name">小米壁画电视 65英寸</div>
                                         <div class="pro-price">6999元</div>
@@ -70,7 +70,7 @@
                                     <a href="" target="_blank"><!--_blank打开一个新窗口-->
                                         <div class="pro-img">
                                             <img
-                                                src="/imgs/nav-img/nav-3-2.jpg"/>
+                                                v-lazy="'/imgs/nav-img/nav-3-2.jpg'"/>
                                         </div>
                                         <div class="pro-name">小米全面屏电视E55A</div>
                                         <div class="pro-price">1999元</div>
@@ -80,7 +80,7 @@
                                     <a href="" target="_blank"><!--_blank打开一个新窗口-->
                                         <div class="pro-img">
                                             <img
-                                                src="/imgs/nav-img/nav-3-3.png"/>
+                                                v-lazy="'/imgs/nav-img/nav-3-3.png'"/>
                                         </div>
                                         <div class="pro-name">小米电视4A 32英寸</div>
                                         <div class="pro-price">699元</div>
@@ -90,7 +90,7 @@
                                     <a href="" target="_blank"><!--_blank打开一个新窗口-->
                                         <div class="pro-img">
                                             <img
-                                                src="/imgs/nav-img/nav-3-4.jpg"/>
+                                                v-lazy="'/imgs/nav-img/nav-3-4.jpg'"/>
                                         </div>
                                         <div class="pro-name">小米电视4A 55英寸</div>
                                         <div class="pro-price">1799元</div>
@@ -100,7 +100,7 @@
                                     <a href="" target="_blank"><!--_blank打开一个新窗口-->
                                         <div class="pro-img">
                                             <img
-                                                src="/imgs/nav-img/nav-3-5.jpg"/>
+                                                v-lazy="'/imgs/nav-img/nav-3-5.jpg'"/>
                                         </div>
                                         <div class="pro-name">小米电视4A 65英寸</div>
                                         <div class="pro-price">1799元</div>
@@ -110,7 +110,7 @@
                                     <a href="" target="_blank"><!--_blank打开一个新窗口-->
                                         <div class="pro-img">
                                             <img
-                                                src="/imgs/nav-img/nav-3-6.png"/>
+                                                v-lazy="'/imgs/nav-img/nav-3-6.png'"/>
                                         </div>
                                         <div class="pro-name">查看全部</div>
                                         <div class="pro-price">查看全部</div>

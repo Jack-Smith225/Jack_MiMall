@@ -2,6 +2,7 @@ import Vue from 'vue'
 import router from "./router";
 import axios from "axios";
 import VueAxios from "vue-axios"
+import VueLazyLoad from 'vue-lazyload'
 import App from './App.vue'
 
 const mock = false
@@ -32,7 +33,10 @@ axios.interceptors.response.use(function (response) {
 /*end::写拦截代码*/
 
 /*应用一个中间件*/
-Vue.use(VueAxios, axios)
+Vue.use(VueAxios, axios);
+Vue.use(VueLazyLoad,{
+  loading: '/imgs/loading-svg/loading-bars.svg'
+})
 Vue.config.productionTip = false
 
 new Vue({
