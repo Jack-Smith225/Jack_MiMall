@@ -81,16 +81,17 @@
                     <div class="list-box"> <!--右边的手机列表-二维-->
                         <div class="list" v-for="(arr, i) in phoneList" :key="i">
                             <div class="item" v-for="(item, j) in arr" :key="j">
-                                <span v-bind:class="{'new-pro':j%2===0, 'kill-pro':!(j%2===0)}">新品</span> <!--标签-新品或秒杀-->
+                                <span v-bind:class="{'new-pro':j%2===0, 'kill-pro':!(j%2===0)}">新品</span>
+                                <!--标签-新品或秒杀-->
                                 <div class="item-img">
                                     <img
                                         v-bind:src="item.mainImage"
                                         alt="">
                                 </div>
                                 <div class="item-info">
-                                    <h3>{{item.name}}</h3>
-                                    <p>{{item.subtitle}}</p> <!--描述信息, 一般用p标签-->
-                                    <p class="price">{{ item.price }}元</p>
+                                    <h3>{{ item.name }}</h3>
+                                    <p>{{ item.subtitle }}</p> <!--描述信息, 一般用p标签-->
+                                    <p class="price" @click="addCart(item.id)">{{ item.price }}元</p>
                                 </div>
                             </div>
                         </div>
@@ -100,7 +101,12 @@
         </div>
 
         <service-bar></service-bar> <!--紧贴底部的服务条-->
-        <modal title="提示" sure-text="查看购物车" btn-type="1" modal-type="middle" v-bind:show-modal="true">
+        <modal title="提示"
+               sure-text="查看购物车"
+               btn-type="1"
+               modal-type="middle"
+               v-bind:show-modal="showModal"
+               v-on:submit="goToCart" v-on:cancel="showModal=false">
             <template v-slot:body>
                 <p>商品添加成功!</p>
             </template>
@@ -220,7 +226,8 @@ export default {
                 }
             ],
             /*手机商品列表*/
-            phoneList: []
+            phoneList: [],
+            showModal: false
         };
     },
     mounted() {
@@ -239,6 +246,21 @@ export default {
                     res.list.slice(4, 8)
                 ]
             });
+        },
+        addCart() {
+            this.showModal = true;
+            return;
+            /*this.axios.post('/carts',{
+                productId:id,
+                selected: true
+            }).then(()=>{
+
+            }).catch(()=>{
+                this.showModal = true
+            })*/
+        },
+        goToCart() {
+            this.$router.push('/cart')
         }
     }
 }
