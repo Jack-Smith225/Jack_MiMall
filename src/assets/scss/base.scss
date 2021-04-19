@@ -3,10 +3,16 @@
   /*让container居中*/
   margin-right: auto;
   margin-left: auto;
+  position: relative;
 }
 a{
   img {
     width: 100%; /*设置在水平方向填满*/
     height: 100%; /*设置在垂直方向填满*/
   }
+}
+input {
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
 }

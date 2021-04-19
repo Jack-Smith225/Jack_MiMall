@@ -2,8 +2,10 @@ import Vue from 'vue'
 import router from "./router";
 import axios from "axios";
 import VueAxios from "vue-axios"
-import VueLazyLoad from 'vue-lazyload'
-import App from './App.vue'
+import VueLazyLoad from 'vue-lazyload';
+import VueCookie from 'vue-cookie' //引入cookie插件
+import App from './App.vue';
+
 
 const mock = false
 if (mock) {
@@ -26,7 +28,8 @@ axios.interceptors.response.use(function (response) {
     window.location.href = '/#/login';
 
   }else {
-    alert(res.msg)
+    alert(res.msg);
+    return Promise.reject(res); // 抛出一个异常
   }
 
 });
@@ -34,6 +37,7 @@ axios.interceptors.response.use(function (response) {
 
 /*应用一个中间件*/
 Vue.use(VueAxios, axios);
+Vue.use(VueCookie); //加载cookie插件
 Vue.use(VueLazyLoad,{
   loading: '/imgs/loading-svg/loading-bars.svg'
 })
