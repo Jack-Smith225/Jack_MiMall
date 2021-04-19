@@ -22,12 +22,14 @@ axios.defaults.timeout = 8000;
 /*start::写拦截代码*/
 axios.interceptors.response.use(function (response) {
   let res = response.data; /*取到我们接口返回的数据*/
+  let path = location.hash;
   if (res.status == 0) {
     return res.data;
   } else if (res.status == 10) { /*未登录状态*/
-    window.location.href = '/#/login';
-
-  }else {
+    if (path != '#/index') {
+      window.location.href = '/#/login';
+    }
+  } else {
     alert(res.msg);
     return Promise.reject(res); // 抛出一个异常
   }
@@ -38,7 +40,7 @@ axios.interceptors.response.use(function (response) {
 /*应用一个中间件*/
 Vue.use(VueAxios, axios);
 Vue.use(VueCookie); //加载cookie插件
-Vue.use(VueLazyLoad,{
+Vue.use(VueLazyLoad, {
   loading: '/imgs/loading-svg/loading-bars.svg'
 })
 Vue.config.productionTip = false
