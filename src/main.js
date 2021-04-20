@@ -4,6 +4,7 @@ import axios from "axios";
 import VueAxios from "vue-axios"
 import VueLazyLoad from 'vue-lazyload';
 import VueCookie from 'vue-cookie' //引入cookie插件
+import store from './store/index'
 import App from './App.vue';
 
 
@@ -48,4 +49,5 @@ Vue.config.productionTip = false
 new Vue({
   router: router,
   render: h => h(App),
+  store: store
 }).$mount('#app')
