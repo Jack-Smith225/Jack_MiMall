@@ -133,6 +133,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
     name: 'nav-header',
     data() {
@@ -142,13 +143,18 @@ export default {
     },
 
     computed: {
-        // 计算属性解决数据显示延迟的问题
-        username() {
-            return this.$store.state.username; // 从vuex中取数据
-        },
-        cartCount() {
-            return this.$store.state.cartCount;
-        }
+        // // 计算属性解决数据显示延迟的问题
+        // username() {
+        //     return this.$store.state.username; // 从vuex中取数据
+        // },
+        // cartCount() {
+        //     return this.$store.state.cartCount;
+        // },
+
+        // 替代上面的计算属性
+        ...mapState([
+            'username', 'cartCount'
+        ])
     },
 
     // tag::金额格式化过滤器, 类似的 日期也可会用到过滤器

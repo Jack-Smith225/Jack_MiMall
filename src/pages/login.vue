@@ -37,6 +37,7 @@
     </div>
 </template>
 <script>
+import {mapActions} from 'vuex'
 export default {
     name: 'login',
     data() {
@@ -54,12 +55,17 @@ export default {
                 password: password
             }).then((res) => {
                 this.$cookie.set('userId', res.id, {expires: '1M'}); //保存到前端的cookie
-                this.$store.dispatch('saveUserName', res.username)
+                // this.$store.dispatch('saveUserName', res.username)
+                this.saveUserName(res.username)
                 this.$router.push('/index');
             }).catch(function (error) {
                 alert(error.msg)
             });
         },
+
+        // 替换上面的 this.$store.dispatch('saveUserName', res.username)
+        ...mapActions(["saveUserName"]),
+
         register() {
             let {username, password} = this; /*从头this中取这两个变量*/
             this.axios.post('/user/register', {
