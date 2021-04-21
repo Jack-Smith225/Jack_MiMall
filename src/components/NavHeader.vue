@@ -15,7 +15,8 @@
                     <a href="javascript:;" v-if="username">{{ username }}</a>
                     <a href="javascript:;" v-if="!username" v-on:click="login">登录</a>
                     <a href="javascript:;" v-if="username">我的订单</a>
-                    <a href="javascript:;" class="my-cart" v-on:click="goToCart"><span class="icon-cart"></span>购物车
+                    <a href="javascript:;" class="my-cart" v-on:click="goToCart"><span
+                        class="icon-cart"></span>购物车({{cartCount}})
                     </a>
                 </div>
             </div>
@@ -39,8 +40,8 @@
                                             <img
                                                 v-lazy="item.mainImage" v-bind:alt="item.subtitle"/>
                                         </div>
-                                        <div class="pro-name">{{item.name}}</div>
-                                        <div class="pro-price">{{item.price | currency}}</div>
+                                        <div class="pro-name">{{ item.name }}</div>
+                                        <div class="pro-price">{{ item.price | currency }}</div>
                                     </a>
                                 </li>
                             </ul>
@@ -134,14 +135,24 @@
 <script>
 export default {
     name: 'nav-header',
-    data(){
+    data() {
         return {
-            username: '',
-            phoneList:[]
+            phoneList: []
         }
     },
+
+    computed: {
+        // 计算属性解决数据显示延迟的问题
+        username() {
+            return this.$store.state.username; // 从vuex中取数据
+        },
+        cartCount() {
+            return this.$store.state.cartCount;
+        }
+    },
+
     // tag::金额格式化过滤器, 类似的 日期也可会用到过滤器
-    filters:{
+    filters: {
         currency(val) {
             if (!val) {
                 return '0.00';
@@ -163,11 +174,11 @@ export default {
         },
         getProductList() {
             this.axios.get('/products', { // get和post的传参方式有区别
-                params:{
-                    categoryId:'100012',
+                params: {
+                    categoryId: '100012',
                     pageSize: 6
                 }
-            }).then((res)=>{
+            }).then((res) => {
                 this.phoneList = res.list
             })
         },
@@ -175,7 +186,7 @@ export default {
             this.$router.push('/cart') /*跳转路由*/
         }
     }
-}
+};
 </script>
 
 <style lang="scss">
@@ -200,7 +211,8 @@ export default {
                 display: inline-block;
                 color: #B0B0B0;
                 margin-right: 17px;
-                &:last-child{
+
+                &:last-child {
                     margin-right: 0;
                 }
             }
