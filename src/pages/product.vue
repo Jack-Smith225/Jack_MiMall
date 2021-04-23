@@ -39,12 +39,15 @@
             <div class="item-video">
                 <h2>60帧超慢动作摄影<br/>慢慢回味每一瞬间的精彩</h2>
                 <p>后置960帧电影般超慢动作视频，将眨眼间的美妙展现得淋漓尽致！<br/>更能AI 精准分析视频内容，15个场景智能匹配背景音效。</p>
-                <div class="video-bg" @click="showSlide='slideDown'"></div>
-                <div class="video-box" v-show="showSlide">
-                    <div class="overlay"></div>
-                    <div class="video" v-bind:class="showSlide">
-                        <span class="icon-close" @click="closeVideo"></span>
-                        <video src="/imgs/product/video.mp4" muted autoplay controls="controls"></video>
+                <div class="video-bg" ></div>
+                <div class="video-box"> <!--视频盒子-->
+                    <div class="overlay"> <!--遮罩-->
+
+                    </div>
+                    <div class="video">
+                        <span class="icon-close"></span>
+                        <video src="/imgs/product/video.mp4" muted autoplay controls="controls">
+                        </video>
                     </div>
                 </div>
             </div>
@@ -176,78 +179,50 @@ export default {
                 font-size: 24px;
                 margin-bottom: 58px;
             }
-
             .video-bg {
-                background: url('/imgs/product/gallery-1.png') no-repeat center;
+                background: url("/imgs/product/gallery-1.png") no-repeat center;
                 background-size: cover;
                 width: 1226px;
                 height: 540px;
-                margin: 0 auto 120px;
+                margin: 0 auto 120px; /*上, 右左, 下*/
                 cursor: pointer;
             }
-
-            .video-box {
+            .video-box{
                 .overlay {
                     @include position(fixed);
                     background-color: #333333;
                     opacity: .4;
                     z-index: 10;
                 }
-
-                @keyframes slideDown {
-                    from {
-                        top: -50%;
-                        opacity: 0;
-                    }
-                    to {
-                        top: 50%;
-                        opacity: 1;
-                    }
-                }
-                @keyframes slideUp {
-                    from {
-                        top: 50%;
-                        opacity: 1;
-                    }
-                    to {
-                        top: -50%;
-                        opacity: 0;
-                    }
-                }
-
                 .video {
-                    position: fixed;
-                    top: -50%;
+                    position: fixed; /*fixed相对于窗口定位, absolute相对于html文档定位*/
+
+                    // start 设置窗口居中
+                    top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
+                    // end 设置窗口居中
+
                     z-index: 10;
                     width: 1000px;
                     height: 536px;
-                    opacity: 1;
-
-                    &.slideDown {
-                        animation: slideDown .6s linear;
-                        top: 50%;
-                    }
-
-                    &.slideUp {
-                        animation: slideUp .6s linear;
-                    }
 
                     .icon-close {
-                        position: absolute;
+                        position: absolute; /*目前来看, absolute也会相当于fixed定位来定位*/
                         top: 20px;
                         right: 20px;
+
                         @include bgImg(20px, 20px, '/imgs/icon-close.png');
                         cursor: pointer;
-                        z-index: 11;
+                        z-index: 10; /*如果不指定这个, 则指针变不成小手指*/
                     }
 
                     video {
                         width: 100%;
                         height: 100%;
-                        object-fit: cover;
+                        object-fit: cover; /*指定视频覆盖窗口*/
                         outline: none;
+
                     }
                 }
             }
