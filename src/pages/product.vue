@@ -39,13 +39,13 @@
             <div class="item-video">
                 <h2>60帧超慢动作摄影<br/>慢慢回味每一瞬间的精彩</h2>
                 <p>后置960帧电影般超慢动作视频，将眨眼间的美妙展现得淋漓尽致！<br/>更能AI 精准分析视频内容，15个场景智能匹配背景音效。</p>
-                <div class="video-bg" ></div>
+                <div class="video-bg" v-on:click="showSlide=true"></div>
                 <div class="video-box"> <!--视频盒子-->
-                    <div class="overlay"> <!--遮罩-->
+                    <div class="overlay" v-if="showSlide"> <!--遮罩-->
 
                     </div>
-                    <div class="video">
-                        <span class="icon-close"></span>
+                    <div class="video" v-bind:class="{'slide':showSlide}">
+                        <span class="icon-close" v-on:click="showSlide = false"></span>
                         <video src="/imgs/product/video.mp4" muted autoplay controls="controls">
                         </video>
                     </div>
@@ -67,8 +67,7 @@ export default {
     },
     data() {
         return {
-            showSlide: '',//控制动画效果
-            product: {},//商品信息
+            showSlide: false,
             swiperOption: {
                 autoplay: true,
                 slidesPerView: 3,
@@ -198,7 +197,7 @@ export default {
                     position: fixed; /*fixed相对于窗口定位, absolute相对于html文档定位*/
 
                     // start 设置窗口居中
-                    top: 50%;
+                    top: -50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
                     // end 设置窗口居中
@@ -206,6 +205,12 @@ export default {
                     z-index: 10;
                     width: 1000px;
                     height: 536px;
+                    opacity: 0; /*opacity数值越小, 越透明*/
+                    transition: all .6s;
+                    &.slide {
+                        top: 50%;
+                        opacity: 1;
+                    }
 
                     .icon-close {
                         position: absolute; /*目前来看, absolute也会相当于fixed定位来定位*/
