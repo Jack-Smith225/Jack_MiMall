@@ -3,7 +3,7 @@
         <div class="container"> <!--定义安全区域-->
             <!--左边的结构-标题-->
             <div class="pro-title">
-                小米8
+                {{ title }}
             </div>
             <!--右边的结构-参数导航列表-->
             <div class="pro-param">
@@ -20,6 +20,9 @@
 <script>
 export default {
     name: 'nav-bar',
+    props: {
+        title: String
+    },
     data() {
         return {
             isFixed: false
