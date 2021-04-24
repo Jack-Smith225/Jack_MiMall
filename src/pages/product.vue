@@ -39,13 +39,13 @@
             <div class="item-video">
                 <h2>60帧超慢动作摄影<br/>慢慢回味每一瞬间的精彩</h2>
                 <p>后置960帧电影般超慢动作视频，将眨眼间的美妙展现得淋漓尽致！<br/>更能AI 精准分析视频内容，15个场景智能匹配背景音效。</p>
-                <div class="video-bg" v-on:click="showSlide=true"></div>
+                <div class="video-bg" v-on:click="showSlide='slideDown'"></div>
                 <div class="video-box"> <!--视频盒子-->
-                    <div class="overlay" v-if="showSlide"> <!--遮罩-->
+                    <div class="overlay" v-if="showSlide==='slideDown'"> <!--遮罩-->
 
                     </div>
-                    <div class="video" v-bind:class="{'slide':showSlide}">
-                        <span class="icon-close" v-on:click="showSlide = false"></span>
+                    <div class="video" v-bind:class="showSlide">
+                        <span class="icon-close" v-on:click="showSlide = 'slideUp'"></span>
                         <video src="/imgs/product/video.mp4" muted autoplay controls="controls">
                         </video>
                     </div>
@@ -67,7 +67,7 @@ export default {
     },
     data() {
         return {
-            showSlide: false,
+            showSlide: '',
             swiperOption: {
                 autoplay: true,
                 slidesPerView: 3,
@@ -178,6 +178,7 @@ export default {
                 font-size: 24px;
                 margin-bottom: 58px;
             }
+
             .video-bg {
                 background: url("/imgs/product/gallery-1.png") no-repeat center;
                 background-size: cover;
@@ -186,13 +187,36 @@ export default {
                 margin: 0 auto 120px; /*上, 右左, 下*/
                 cursor: pointer;
             }
-            .video-box{
+
+            .video-box {
                 .overlay {
                     @include position(fixed);
                     background-color: #333333;
                     opacity: .4;
                     z-index: 10;
                 }
+
+                @keyframes slideDown {
+                    from {
+                        top: -50%;
+                        opacity: 0;
+                    }
+                    to {
+                        top: 50%;
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideUp {
+                    from {
+                        top: 50%;
+                        opacity: 1;
+                    }
+                    to {
+                        top: -50%;
+                        opacity: 0;
+                    }
+                }
+
                 .video {
                     position: fixed; /*fixed相对于窗口定位, absolute相对于html文档定位*/
 
@@ -206,10 +230,14 @@ export default {
                     width: 1000px;
                     height: 536px;
                     opacity: 0; /*opacity数值越小, 越透明*/
-                    transition: all .6s;
-                    &.slide {
-                        top: 50%;
+
+                    &.slideDown {
+                        animation: slideDown .6s linear;
+                        top: 50% ;
                         opacity: 1;
+                    }
+                    &.slideUp {
+                        animation: slideUp .6s linear;
                     }
 
                     .icon-close {
