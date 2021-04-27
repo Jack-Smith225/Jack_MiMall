@@ -255,48 +255,7 @@ export default {
             justify-content: $hov; !*两端对齐*!
             align-items: $col; !*在交叉轴的维度*!*/
             //end::由mixin函数替换
-            .header-logo {
-                display: inline-block;
-                width: 55px;
-                height: 55px;
-                background-color: #FF6600;
 
-                a {
-                    display: inline-block;
-                    width: 110px;
-                    height: 55px;
-
-                    &:before { /*scss的伪类-logo标志*/
-                        content: ' '; /*content是占位的, 如果不加, 伪类就无法正常显示*/
-                        @include bgImg(55px, 55px, "/imgs/mi-logo.png", 55px);
-                        //tag::由mixin函数替换
-                        /*display: inline-block;
-                        width: 55px;
-                        height: 55px;
-                        background: url("/imgs/mi-logo.png") no-repeat center;
-                        background-size: 55px;*/
-                        //end::由mixin函数替换
-                        transition: margin 0.2s;
-                    }
-
-                    &:after { /*scss的伪类-home标志*/
-                        content: ' ';
-                        @include bgImg(55px, 55px, "/imgs/mi-home.png", 55px)
-                        //tag::由mixin函数替换
-                        /* display: inline-block;
-                         width: 55px;
-                         height: 55px;
-                         background: url("/imgs/mi-home.png") no-repeat center;
-                         background-size: 55px;*/
-                        //end::由mixin函数替换
-                    }
-
-                    &:hover:before {
-                        margin-left: -55px;
-                        transition: margin 0.2s;
-                    }
-                }
-            }
 
             .header-menu {
                 display: inline-block;
