@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="cart-box">
                     <ul class="cart-item-head">
-                        <li class="col-1"><span class="checkbox" v-bind:class="{'checked':allChecked}" ></span>全选</li>
+                        <li class="col-1"><span class="checkbox"  v-bind:class="{'checked':allChecked}"></span>全选</li>
                         <li class="col-3">商品名称</li>
                         <li class="col-1">单价</li>
                         <li class="col-2">数量</li>
@@ -17,9 +17,9 @@
                         <li class="col-1">操作</li>
                     </ul>
                     <ul class="cart-item-list">
-                        <li class="cart-item" v-for="(item,index) in list" v-bind:key="index">
+                        <li class="cart-item" v-for="(item, index) in list" v-bind:key="index"> <!--索引需要放在item后面-->
                             <div class="item-check">
-                                <span class="checkbox" v-bind:class="{'checked':item.productSelected}"></span>
+                                <span class="checkbox" v-bind:class="{'checked': item.productSelected}"></span>
                             </div>
                             <div class="item-name">
                                 <img v-lazy="item.productMainImage" alt="">
@@ -78,8 +78,13 @@ export default{
     },
     methods:{
         getCartList(){
-            this.axios.get('/carts').then(()=>{
-
+            this.axios.get('/carts').then((res)=>{
+                this.list = res.cartProductVoList || [];
+                this.allChecked = res.selectedAll;
+                this.cartTotalPrice = res.cartTotalPrice;
+                this.checkedNum = this.list.filter(item=> {
+                    return item.productSelected;
+                }).length;
             })
         },
 
