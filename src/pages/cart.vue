@@ -47,7 +47,7 @@
                     </div>
                     <div class="total fr">
                         合计：<span>{{cartTotalPrice}}</span>元
-                        <a href="javascript:;" class="btn">去结算</a>
+                        <a href="javascript:;" class="btn" @click="order">去结算</a>
                     </div>
                 </div>
             </div>
@@ -78,10 +78,10 @@ export default{
     mounted(){
         this.getCartList();
     },
-    methods:{
+    methods: {
         // 获取购物车列表
-        getCartList(){
-            this.axios.get('/carts').then((res)=>{
+        getCartList() {
+            this.axios.get('/carts').then((res) => {
                 this.renderData(res);
             })
         },
@@ -95,7 +95,7 @@ export default{
                     return;
                 }
                 --quantity;
-            }else if (type == '+') {
+            } else if (type == '+') {
                 if (quantity > item.productStock) {
                     alert('商品不能超过库存数量');
                 }
@@ -104,7 +104,7 @@ export default{
                 selected = !item.productSelected;
             }
 
-            this.axios.put(`/carts/${item.productId}`,{
+            this.axios.put(`/carts/${item.productId}`, {
                 quantity, selected
             }).then((res) => {
                 this.renderData(res);
@@ -119,7 +119,7 @@ export default{
         // 控制全选功能
         toggleAll() {
             let url = this.allChecked ? '/carts/unSelectAll' : '/carts/selectAll';
-            this.axios.put(url).then((res)=>{
+            this.axios.put(url).then((res) => {
                 this.renderData(res);
             });
         },
@@ -128,9 +128,18 @@ export default{
             this.list = res.cartProductVoList || [];
             this.allChecked = res.selectedAll;
             this.cartTotalPrice = res.cartTotalPrice;
-            this.checkedNum = this.list.filter(item=> {
+            this.checkedNum = this.list.filter(item => {
                 return item.productSelected;
             }).length;
+        },
+        // 购物车下单
+        order() {
+            let isCheck = this.list.every(item => !item.productSelected);
+            if (isCheck) {
+                alert("请选择一件商品")
+            } else {
+                this.$router.push('/order/confirm');
+            }
         }
 
     }
