@@ -4,7 +4,7 @@ import axios from "axios";
 import VueAxios from "vue-axios"
 import VueLazyLoad from 'vue-lazyload';
 import VueCookie from 'vue-cookie' //引入cookie插件
-import {Message} from 'element-ui';
+import {Message} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from './store/index'
 import App from './App.vue';
@@ -35,7 +35,7 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(res);
   } else {
     // alert(res.msg);
-    Message.warning(res.msg)
+    this.$message.warning(res.msg)
     return Promise.reject(res); // 抛出一个异常
   }
 
@@ -48,6 +48,7 @@ Vue.use(VueCookie); //加载cookie插件
 Vue.use(VueLazyLoad, {
   loading: '/imgs/loading-svg/loading-bars.svg'
 })
+Vue.prototype.$message = Message;
 Vue.config.productionTip = false
 
 new Vue({

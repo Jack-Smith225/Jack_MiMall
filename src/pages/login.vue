@@ -38,7 +38,6 @@
 </template>
 <script>
 import {mapActions} from 'vuex'
-import {Message} from "_element-ui@2.15.1@element-ui";
 export default {
     name: 'login',
     data() {
@@ -60,7 +59,7 @@ export default {
                 this.saveUserName(res.username)
                 this.$router.push('/index');
             }).catch(function (error) {
-                Message.info(error.msg)
+                this.$message.info(error.msg)
             });
         },
 
@@ -74,7 +73,7 @@ export default {
                 password: password,
                 //email: 'admin1@163.com'
             }).then(() => {
-                Message.success('注册成功')
+                this.$message.success('注册成功')
             });
         }
     }
