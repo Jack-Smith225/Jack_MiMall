@@ -14,9 +14,10 @@
                 <div class="topbar-user">
                     <a href="javascript:;" v-if="username">{{ username }}</a>
                     <a href="javascript:;" v-if="!username" v-on:click="login">登录</a>
+                    <a href="javascript:;" v-if="username" v-on:click="login" @click="logout">退出</a>
                     <a href="javascript:;" v-if="username">我的订单</a>
                     <a href="javascript:;" class="my-cart" v-on:click="goToCart"><span
-                        class="icon-cart"></span>购物车({{cartCount}})
+                        class="icon-cart"></span>购物车({{ cartCount }})
                     </a>
                 </div>
             </div>
@@ -134,6 +135,7 @@
 
 <script>
 import {mapState} from 'vuex'
+
 export default {
     name: 'nav-header',
     data() {
@@ -172,7 +174,12 @@ export default {
     // end::金额格式化过滤器, 类似的 日期也可会用到过滤器
 
     mounted() { // 相当于ready()
-        this.getProductList()
+        this.getProductList();
+        let params = this.$route.params
+        // 如果是从login页面跳转过来的, 则重新获取购物车数量
+        if (params && params.from == 'login') {
+            this.getCartCount();
+        }
     },
     methods: {
         login() { //跳转到登录页面的方法
@@ -187,6 +194,23 @@ export default {
             }).then((res) => {
                 this.phoneList = res.list
             })
+        },
+        getCartCount() {
+            this.axios.get('/carts/products/sum').then((res = 0) => { // res=0 给一个默认值
+                this.$store.dispatch('saveCartCount', res)
+            });
+        },
+        logout() {
+            this.axios.post('/user/logout',).then(() => {
+                this.$message.success('退出成功')
+
+                // 清空cookie
+                this.$cookie.set('userId', '', {
+                    expires: '-1'
+                });
+                this.$store.dispatch('saveUserName', '');
+                this.$store.dispatch('saveCartCount', '0');
+            });
         },
         goToCart() {
             this.$router.push('/cart') /*跳转路由*/

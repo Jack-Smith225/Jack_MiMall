@@ -54,10 +54,15 @@ export default {
                 username: username,
                 password: password
             }).then((res) => {
-                this.$cookie.set('userId', res.id, {expires: '1M'}); //保存到前端的cookie
+                this.$cookie.set('userId', res.id, {expires: 'Session'}); //保存到前端的cookie
                 // this.$store.dispatch('saveUserName', res.username)
                 this.saveUserName(res.username)
-                this.$router.push('/index');
+                this.$router.push({
+                    name: 'index',
+                    params: {
+                        from: 'login'
+                    }
+                });
             }).catch(function (error) {
                 this.$message.info(error.msg)
             });
