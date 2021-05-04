@@ -50,7 +50,7 @@
                                     {{ item.receiverDistrict }}<br>{{ item.receiverAddress }}
                                 </div>
                                 <div class="action">
-                                    <a href="javascript:;" class="fl">
+                                    <a href="javascript:;" class="fl" @click="delAddress(item)">
                                         <svg class="icon icon-del">
                                             <use xlink:href="#icon-del"></use>
                                         </svg>
@@ -120,42 +120,13 @@
                 </div>
             </div>
         </div>
-        <modal
-            title="新增确认"
-            btnType="1">
+        <!--模态框子组件-->
+        <modal title="删除确认" btn-type="1" :show-modal="showDelModal" @cancel="showDelModal = false"
+               @submit="submitAddress">
+
             <template v-slot:body>
-                <div class="edit-wrap">
-                    <div class="item">
-                        <input type="text" class="input" placeholder="姓名">
-                        <input type="text" class="input" placeholder="手机号">
-                    </div>
-                    <div class="item">
-                        <select name="province">
-                            <option value="北京">北京</option>
-                            <option value="天津">天津</option>
-                            <option value="河北">河北</option>
-                        </select>
-                        <select name="city">
-                            <option value="北京">北京</option>
-                            <option value="天津">天津</option>
-                            <option value="河北">石家庄</option>
-                        </select>
-                        <select name="district">
-                            <option value="北京">昌平区</option>
-                            <option value="天津">海淀区</option>
-                            <option value="河北">东城区</option>
-                            <option value="天津">西城区</option>
-                            <option value="河北">顺义区</option>
-                            <option value="天津">房山区</option>
-                        </select>
-                    </div>
-                    <div class="item">
-                        <textarea name="street"></textarea>
-                    </div>
-                    <div class="item">
-                        <input type="text" class="input" placeholder="邮编">
-                    </div>
-                </div>
+                <p>您确认要删除此地址吗?</p>
+
             </template>
         </modal>
     </div>
@@ -172,6 +143,9 @@ export default {
             cartList: [], //购物车种需要结算的商品列表
             cartTotalPrice: 0, //总金额, 默认0
             count: 0, //商品结算数量
+            checkedItem: {}, //选中的商品对象
+            userAction: '', // 用户行为: 0:新增 1:编辑 2:删除
+            showDelModal: false,
         };
     },
     mounted() {
@@ -197,6 +171,39 @@ export default {
                     this.count += item.quantity;
                 });
             });
+        },
+        //
+        delAddress(item) {
+            this.checkedItem = item;
+            this.userAction = 2;
+            this.showDelModal = true;
+        },
+        // 地址删除,编辑,新增功能
+        submitAddress() {
+            let {checkedItem, userAction} = this;
+            let method, url;
+            if (userAction == 0) {
+                method = 'post', url = '/shippings';
+            } else if (userAction == 1) {
+                method = 'put', url = `/shippings/${checkedItem.id}`;
+            } else {
+                method = 'delete', url = `/shippings/${checkedItem.id}`;
+            }
+
+            this.axios[method](url).then(
+                () => {
+                    this.closeModal();
+                    this.getAddressList();
+                    this.$message.success('操作成功')
+                }
+            );
+
+        },
+        // 关闭弹窗之后, 还原到默认状态
+        closeModal() {
+            this.checkedItem = {};
+            this.userAction = '';
+            this.showDelModal = false;
         }
     }
 }
