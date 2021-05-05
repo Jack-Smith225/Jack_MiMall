@@ -120,6 +120,45 @@
                 </div>
             </div>
         </div>
+        <!--添加收货地址弹窗-->
+        <modal title="新增确认" btn-type="1" :show-modal="showEditModal" @cancel="showEditModal = false"
+               @submit="submitAddress">
+
+            <template v-slot:body>
+                <div class="edit-wrap"> <!--四行编辑框-->
+                    <div class="item">
+                        <input type="text" class="input" placeholder="姓名">
+                        <input type="text" class="input" placeholder="手机号">
+                    </div>
+                    <div class="item">
+                        <select name="province">
+                            <option value="北京">北京</option>
+                            <option value="天津">天津</option>
+                            <option value="河北">河北</option>
+                        </select>
+                        <select name="city">
+                            <option value="北京">北京</option>
+                            <option value="天津">天津</option>
+                            <option value="河北">石家庄</option>
+                        </select>
+                        <select name="district">
+                            <option value="昌平">昌平区</option>
+                            <option value="天津">海淀区</option>
+                            <option value="河北">东城区</option>
+                            <option value="河北">西城区</option>
+                            <option value="河北">顺义区</option>
+                            <option value="河北">房山区</option>
+                        </select>
+                    </div>
+                    <div class="item">
+                        <textarea name="street" placeholder="详细地址"></textarea>
+                    </div>
+                    <div class="item">
+                        <input type="text" class="input" placeholder="邮编">
+                    </div>
+                </div>
+            </template>
+        </modal>
         <!--模态框子组件-->
         <modal title="删除确认" btn-type="1" :show-modal="showDelModal" @cancel="showDelModal = false"
                @submit="submitAddress">
@@ -146,6 +185,7 @@ export default {
             checkedItem: {}, //选中的商品对象
             userAction: '', // 用户行为: 0:新增 1:编辑 2:删除
             showDelModal: false,
+            showEditModal:true, //是否显示新增/编辑弹框
         };
     },
     mounted() {
@@ -393,36 +433,33 @@ export default {
 
     .edit-wrap {
         font-size: 14px;
-
         .item {
             margin-bottom: 15px;
-
             .input {
                 display: inline-block;
                 width: 283px;
                 height: 40px;
                 line-height: 40px;
                 padding-left: 15px;
-                border: 1px solid #E5E5E5;
+                border: 1px solid #e5e5e5;
 
-                & + .input {
+                // 指定兄弟元素的样式
+                &+.input{
                     margin-left: 14px;
                 }
             }
-
             select {
                 height: 40px;
                 line-height: 40px;
-                border: 1px solid #E5E5E5;
+                border: 1px solid #e5e5e5;
                 margin-right: 15px;
             }
-
             textarea {
                 height: 62px;
                 width: 100%;
                 padding: 13px 15px;
                 box-sizing: border-box;
-                border: 1px solid #E5E5E5;
+                border: 1px solid #e5e5e5;
             }
         }
     }
