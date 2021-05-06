@@ -43,7 +43,9 @@
                     <div class="item-address">
                         <h2 class="addr-title">收货地址</h2>
                         <div class="addr-list clearfix">
-                            <div class="addr-info" v-for="(item, index) in list" :key="index">
+                            <div class="addr-info" :class="{'checked':index == checkIndex}" @click="checkIndex=index"
+                                 v-for="(item,index) in list"
+                                 :key="index">
                                 <h2>{{ item.receiverName }}</h2>
                                 <div class="phone">{{ item.receiverMobile }}</div>
                                 <div class="street">{{ item.receiverProvince }} {{ item.receiverCity }}
@@ -55,7 +57,7 @@
                                             <use xlink:href="#icon-del"></use>
                                         </svg>
                                     </a>
-                                    <a href="javascript:;" class="fr">
+                                    <a href="javascript:;" class="fr" @click="editAddress(item)">
                                         <svg class="icon icon-edit">
                                             <use xlink:href="#icon-edit"></use>
                                         </svg>
@@ -115,7 +117,7 @@
                     </div>
                     <div class="btn-group">
                         <a href="/#/cart" class="btn btn-default btn-large">返回购物车</a>
-                        <a href="javascript:;" class="btn btn-large">去结算</a>
+                        <a href="javascript:;" class="btn btn-large" @click="orderSubmit">去结算</a>
                     </div>
                 </div>
             </div>
@@ -186,6 +188,7 @@ export default {
             userAction: '', // 用户行为: 0:新增 1:编辑 2:删除
             showDelModal: false,
             showEditModal: false, //是否显示新增/编辑弹框
+            checkIndex: 0, // 当前收货地址选中的索引
         };
     },
     mounted() {
@@ -218,6 +221,12 @@ export default {
             this.checkedItem = {};
             this.showEditModal = true;
         },
+        // 编辑地址
+        editAddress(item) {
+            this.userAction = 1; // 1是编辑
+            this.checkedItem = item;
+            this.showEditModal = true;
+        },
         //
         delAddress(item) {
             this.checkedItem = item;
@@ -238,21 +247,23 @@ export default {
 
             if (userAction == 0 || userAction == 1) {
 
-                let {receiverName, receiverMobile, receiverProvince, receiverCity, receiverDistrict,
-                    receiverAddress, receiverZip} = checkedItem;
+                let {
+                    receiverName, receiverMobile, receiverProvince, receiverCity, receiverDistrict,
+                    receiverAddress, receiverZip
+                } = checkedItem;
 
                 let errMsg;
                 if (!receiverName) {
                     errMsg = "请输入收货人名称";
-                }else if (!receiverMobile || !/\d{11}/.test(receiverMobile)) {
+                } else if (!receiverMobile || !/\d{11}/.test(receiverMobile)) {
                     errMsg = "请输入正确的手机号";
-                }else if (!receiverProvince) {
+                } else if (!receiverProvince) {
                     errMsg = "请选择省份";
-                }else if (!receiverCity ) {
+                } else if (!receiverCity) {
                     errMsg = "请选择城市";
-                }else if (!receiverDistrict || !receiverAddress) {
+                } else if (!receiverDistrict || !receiverAddress) {
                     errMsg = "请输入收货地址";
-                }else if ( !/\d{6}/.test(receiverZip)) {
+                } else if (!/\d{6}/.test(receiverZip)) {
                     errMsg = "请输入6位邮编";
                 }
 
@@ -288,6 +299,24 @@ export default {
             this.showDelModal = false;
             this.showEditModal = false;
         },
+        orderSubmit() {
+            let item = this.list[this.checkIndex];
+            if (!item) {
+                this.$message.error('请选择一个收货地址');
+                return
+            }
+            this.axios.post('/orders', {
+                shippingId: item.id
+            }).then((res) => {
+                this.$router.push({
+                    path: '/order/pay',
+                    // 给新路由传参
+                    query: {
+                        orderNo: res.orderNo
+                    }
+                });
+            });
+        }
 
     }
 }
