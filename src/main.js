@@ -39,6 +39,10 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(res); // 抛出一个异常
   }
 
+}, (error) => { // 服务器异常
+  let res = error.response;
+  Message.error(res.data.message);
+  return Promise.reject(error)
 });
 /*end::写拦截代码*/
 
