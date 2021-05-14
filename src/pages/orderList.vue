@@ -49,6 +49,20 @@
                             </div>
                         </div>
                     </div>
+
+                    <!--start::分页插件-->
+                    <el-pagination
+                        class="pagination"
+                        background
+                        layout="prev, pager, next"
+                        :page-size="pageSize"
+                        :total="total"
+                        @current-change="handleChange"
+                    >
+
+                    </el-pagination>
+                    <!--end::分页插件-->
+
                     <no-data v-if="!loading && list.length == 0"></no-data>
                 </div>
             </div>
@@ -59,18 +73,23 @@
 import OrderHeader from './../components/OrderHeader';
 import Loading from "@/components/Loading";
 import NoData from "@/pages/NoData";
+import {Pagination} from 'element-ui'
 
 export default {
     name: 'order-list',
     components: {
         OrderHeader,
         Loading,
-        NoData
+        NoData,
+        [Pagination.name]: Pagination,
     },
     data() {
         return {
             list: [], //订单列表
             loading: true, // 是否显示loading
+            pageSize: 10,
+            pageNum: 1, // 当前页
+            total: 0, // 总条数
         }
     },
     mounted() {
@@ -78,9 +97,15 @@ export default {
     },
     methods: {
         getOrderList() {
-            this.axios.get('/orders').then((res) => {
+            this.axios.get('/orders',{
+                params:{
+                    pageNum : this.pageNum
+
+                }
+            }).then((res) => {
                 this.loading = false;
                 this.list = res.list;
+                this.total = res.total;
             }).catch(() => {
                 this.loading = false;
             });
@@ -103,6 +128,16 @@ export default {
                 }
             })
             // end:三种路由传参方式
+        },
+        /**
+         * 组件会传过来这个参数, 即"回调参数"
+         * @param pageNum 当前页码-"回调参数"
+         */
+        handleChange(pageNum) {
+
+            this.pageNum = pageNum;
+            this.getOrderList()
+
         }
     }
 }
@@ -184,22 +219,16 @@ export default {
                 }
             }
 
-            .pagination {
+            .pagination{
                 text-align: right;
             }
 
+            /*start::改分页器的主题色-->第一种方式*/
             .el-pagination.is-background .el-pager li:not(.disabled).active {
-                background-color: #FF6600;
+                background-color: #ff6600;
+                color: #FFF;
             }
-
-            .el-button--primary {
-                background-color: #FF6600;
-                border-color: #FF6600;
-            }
-
-            .load-more, .scroll-more {
-                text-align: center;
-            }
+            /*end::改分页器的主题色-->第一种方式*/
         }
     }
 }
