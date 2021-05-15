@@ -52,6 +52,7 @@
 
                     <!--start::分页插件-->
                     <el-pagination
+                        v-if="false"
                         class="pagination"
                         background
                         layout="prev, pager, next"
@@ -63,6 +64,12 @@
                     </el-pagination>
                     <!--end::分页插件-->
 
+                    <!--start::加载更多插件-->
+                    <div class="load-more">
+                        <el-button type="primary" :loading="loading" @click="loadMore">加载更多</el-button>
+                    </div>
+                    <!--end::加载更多插件-->
+
                     <no-data v-if="!loading && list.length == 0"></no-data>
                 </div>
             </div>
@@ -73,7 +80,7 @@
 import OrderHeader from './../components/OrderHeader';
 import Loading from "@/components/Loading";
 import NoData from "@/pages/NoData";
-import {Pagination} from 'element-ui'
+import {Pagination, Button} from 'element-ui'
 
 export default {
     name: 'order-list',
@@ -82,11 +89,12 @@ export default {
         Loading,
         NoData,
         [Pagination.name]: Pagination,
+        [Button.name]: Button
     },
     data() {
         return {
             list: [], //订单列表
-            loading: true, // 是否显示loading
+            loading: false, // 是否显示loading
             pageSize: 10,
             pageNum: 1, // 当前页
             total: 0, // 总条数
@@ -97,15 +105,16 @@ export default {
     },
     methods: {
         getOrderList() {
-            this.axios.get('/orders',{
-                params:{
-                    pageNum : this.pageNum
-
+            this.loading = true;
+            this.axios.get('/orders', {
+                params: {
+                    pageNum: this.pageNum,
+                    pageSize: this.pageSize
                 }
             }).then((res) => {
                 this.loading = false;
-                this.list = res.list;
-                this.total = res.total;
+                this.list = this.list.concat(res.list);
+                // this.total = res.total; // "加载更多"模式下, total变量就没用了
             }).catch(() => {
                 this.loading = false;
             });
@@ -138,6 +147,11 @@ export default {
             this.pageNum = pageNum;
             this.getOrderList()
 
+        },
+
+        loadMore() {
+            this.pageNum++;
+            this.getOrderList();
         }
     }
 }
@@ -219,7 +233,7 @@ export default {
                 }
             }
 
-            .pagination{
+            .pagination {
                 text-align: right;
             }
 
@@ -229,6 +243,16 @@ export default {
                 color: #FFF;
             }
             /*end::改分页器的主题色-->第一种方式*/
+
+            .load-more {
+                text-align: center; // 控制div里面的按钮居中, 通常需要把行内元素放到块级元素里面, 并设置text-align来设置居中
+            }
+
+            .el-button--primary {
+                color: #FFF;
+                background-color: #ff6600;
+                border-color: #ff6600;
+            }
         }
     }
 }
