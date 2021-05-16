@@ -65,10 +65,17 @@
                     <!--end::分页插件-->
 
                     <!--start::加载更多插件-->
-                    <div class="load-more">
-                        <el-button type="primary" :loading="loading" @click="loadMore">加载更多</el-button>
+                    <div class="load-more" >
+                        <el-button type="primary" :loading="loading" @click="loadMore" v-if="showNextPage">加载更多</el-button>
                     </div>
                     <!--end::加载更多插件-->
+
+                    <!--start::滚动加载-->
+                    <div class="scroll-more" v-infinite-scroll="scrollMore" infinite-scroll-disabled="busy"
+                         infinite-scroll-distance="410">
+                        <img src="/imgs/loading-svg/loading-spinning-bubbles.svg" v-show="loading" alt="">
+                    </div>
+                    <!--end::滚动加载-->
 
                     <no-data v-if="!loading && list.length == 0"></no-data>
                 </div>
@@ -81,6 +88,7 @@ import OrderHeader from './../components/OrderHeader';
 import Loading from "@/components/Loading";
 import NoData from "@/pages/NoData";
 import {Pagination, Button} from 'element-ui'
+import infiniteScroll from 'vue-infinite-scroll'
 
 export default {
     name: 'order-list',
@@ -91,13 +99,16 @@ export default {
         [Pagination.name]: Pagination,
         [Button.name]: Button
     },
+    directives: {infiniteScroll},
     data() {
         return {
             list: [], //订单列表
             loading: false, // 是否显示loading
-            pageSize: 10,
+            pageSize: 5,
             pageNum: 1, // 当前页
             total: 0, // 总条数
+            showNextPage: true, // "加载更多"按钮是否显示
+            busy: false, // 决定滚动加载图标是否禁用
         }
     },
     mounted() {
@@ -106,6 +117,7 @@ export default {
     methods: {
         getOrderList() {
             this.loading = true;
+            this.busy = true;
             this.axios.get('/orders', {
                 params: {
                     pageNum: this.pageNum,
@@ -115,6 +127,11 @@ export default {
                 this.loading = false;
                 this.list = this.list.concat(res.list);
                 // this.total = res.total; // "加载更多"模式下, total变量就没用了
+                if (!res.hasNextPage) {
+                    this.showNextPage = false;
+                }
+
+                this.busy = false;
             }).catch(() => {
                 this.loading = false;
             });
@@ -139,7 +156,7 @@ export default {
             // end:三种路由传参方式
         },
         /**
-         * 组件会传过来这个参数, 即"回调参数"
+         * 组件会传过来这个参数, 即"回调参数" - 分页器分页
          * @param pageNum 当前页码-"回调参数"
          */
         handleChange(pageNum) {
@@ -148,10 +165,44 @@ export default {
             this.getOrderList()
 
         },
-
+        /**
+         * 加载更多方法 - 加载更多分页
+         */
         loadMore() {
             this.pageNum++;
             this.getOrderList();
+        },
+        /**
+         * 滚动更多方法 - 滚动更多分页
+         */
+        scrollMore() {
+            this.busy = true;
+            setTimeout(() => {
+                this.pageNum++;
+                this.getList();
+
+            }, 500);
+        },
+        /**
+         * 专门给scrollMore使用
+         */
+        getList() {
+            this.loading = true;
+            this.axios.get('/orders', {
+                params: {
+                    pageNum: this.pageNum,
+                    pageSize: this.pageSize
+                }
+            }).then((res) => {
+                this.list = this.list.concat(res.list);
+                this.loading = false;
+                if (res.hasNextPage) {
+                    this.busy = false;
+                } else {
+                    this.busy = true;
+                    this.showNextPage = false;
+                }
+            });
         }
     }
 }
@@ -244,7 +295,7 @@ export default {
             }
             /*end::改分页器的主题色-->第一种方式*/
 
-            .load-more {
+            .load-more, .scroll-more {
                 text-align: center; // 控制div里面的按钮居中, 通常需要把行内元素放到块级元素里面, 并设置text-align来设置居中
             }
 
@@ -253,6 +304,7 @@ export default {
                 background-color: #ff6600;
                 border-color: #ff6600;
             }
+
         }
     }
 }
