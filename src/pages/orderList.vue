@@ -52,7 +52,6 @@
 
                     <!--start::分页插件-->
                     <el-pagination
-                        v-if="false"
                         class="pagination"
                         background
                         layout="prev, pager, next"
@@ -65,19 +64,19 @@
                     <!--end::分页插件-->
 
                     <!--start::加载更多插件-->
-                    <div class="load-more" >
-                        <el-button type="primary" :loading="loading" @click="loadMore" v-if="showNextPage">加载更多</el-button>
+                    <div class="load-more">
+                        <el-button type="primary" :loading="loading" @click="loadMore" v-if="false">加载更多</el-button>
                     </div>
                     <!--end::加载更多插件-->
 
                     <!--start::滚动加载-->
-                    <div class="scroll-more" v-infinite-scroll="scrollMore" infinite-scroll-disabled="busy"
-                         infinite-scroll-distance="410">
-                        <img src="/imgs/loading-svg/loading-spinning-bubbles.svg" v-show="loading" alt="">
+                    <div class="scroll-more" v-infinite-scroll="scrollMore" infinite-scroll-disabled="true"
+                         infinite-scroll-distance="410" v-if="false">
+                        <img src="/imgs/loading-svg/loading-spinning-bubbles.svg" v-show="false" alt="">
                     </div>
                     <!--end::滚动加载-->
 
-                    <no-data v-if="!loading && list.length == 0"></no-data>
+                    <no-data v-if="!loading && list.length === 0"></no-data>
                 </div>
             </div>
         </div>
@@ -103,8 +102,8 @@ export default {
     data() {
         return {
             list: [], //订单列表
-            loading: false, // 是否显示loading
-            pageSize: 5,
+            loading: true, // 是否显示loading
+            pageSize: 10,
             pageNum: 1, // 当前页
             total: 0, // 总条数
             showNextPage: true, // "加载更多"按钮是否显示
@@ -116,22 +115,15 @@ export default {
     },
     methods: {
         getOrderList() {
-            this.loading = true;
-            this.busy = true;
             this.axios.get('/orders', {
                 params: {
                     pageNum: this.pageNum,
                     pageSize: this.pageSize
                 }
             }).then((res) => {
+                this.list = res.list;
+                this.total = res.total;
                 this.loading = false;
-                this.list = this.list.concat(res.list);
-                // this.total = res.total; // "加载更多"模式下, total变量就没用了
-                if (!res.hasNextPage) {
-                    this.showNextPage = false;
-                }
-
-                this.busy = false;
             }).catch(() => {
                 this.loading = false;
             });
@@ -161,6 +153,8 @@ export default {
          */
         handleChange(pageNum) {
 
+            this.loading = true;
+            this.list = [];
             this.pageNum = pageNum;
             this.getOrderList()
 
@@ -293,6 +287,7 @@ export default {
                 background-color: #ff6600;
                 color: #FFF;
             }
+
             /*end::改分页器的主题色-->第一种方式*/
 
             .load-more, .scroll-more {
