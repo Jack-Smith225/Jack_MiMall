@@ -21,7 +21,11 @@ module.exports = {
 
   // indexPath: 'index.html', // 有默认选项: index.html
 
-  productionSourceMap: false, // 决定是否有 js.map文件
+  productionSourceMap: true, // 决定是否有 js.map文件
 
-  // lintOnSave: false // 关闭eslint
+  // lintOnSave: false, // 关闭eslint
+
+  chainWebpack: (config)=>{
+    config.plugins.delete('prefetch') // 删除预加载所有的js文件
+  }
 };
